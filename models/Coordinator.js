@@ -1,6 +1,6 @@
 class Coordinator {
-    constructor({id = null, department, email, username, password, name, isCoord }){
-        this.id = id;
+    constructor({coordId = null, department, email, username, password, name, isCoord }){
+        this.coordId = coordId;
         this.department = department;
         this.email = email;
         this.username = username;
@@ -10,4 +10,4 @@ class Coordinator {
     }
 }
 
-moudule.exports = Coordinator;
+module.exports = Coordinator;

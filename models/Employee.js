@@ -1,6 +1,6 @@
 class Employee {
-    constructor({id = null, department, email, username, password, name, isCoord }){
-        this.id = id;
+    constructor({empId = null, department, email, username, password, name, isCoord}){
+        this.empId = empId;
         this.department = department;
         this.email = email;
         this.username = username;
@@ -10,4 +10,4 @@ class Employee {
     }
 }
 
-moudule.exports = Employee;
+module.exports = Employee;
