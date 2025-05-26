@@ -1,19 +1,15 @@
-require('dotenv').config();
-const express = require('express');
+const express = require("express");
 const app = express();
+const path = require("path");
+const PORT = 3000;
 const db = require('./config/db');
-const path = require('path');
 
-app.get('/', async (req, res) => {
-  try {
-    const result = await db.query('SELECT NOW()');
-    res.send(`Hora atual no banco: ${result.rows[0].now}`);
-  } catch (err) {
-    res.status(500).send('Erro ao conectar com o banco.');
-  }
-});
 
-const PORT = process.env.PORT || 3000;
+app.use(express.json());
+
+const routes = require("./routes/index");
+app.use("/", routes);
+
 app.listen(PORT, () => {
-  console.log(`Servidor rodando em http://localhost:${PORT}`);
+  console.log(`Servidor rodando na porta ${PORT}`);
 });

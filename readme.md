@@ -6,11 +6,11 @@
 
 # Projeto Individual M02
 
-## :student: 
+## Desenvolvido por: 
 
 - <a href="https://www.linkedin.com/in/pedro-henrique-de-lima-castro-1b89b9214/">Pedro Henrique de Lima Castro</a> 
 
-## :teacher: Professores:
+## Professores:
 ### Orientador(a) 
 - <a href="https://www.linkedin.com/in/laizaribeiro/">Laíza Ribeiro</a>
 ### Instrutores

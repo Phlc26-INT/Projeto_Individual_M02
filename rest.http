@@ -1,0 +1,25 @@
+POST http://localhost:3000/api/employee
+Content-Type: application/json
+
+{
+    "department": "Supply Chain",
+    "email": "pedro.castro@empresa.com.br",
+    "username": "Phlc26",
+    "password": "Password123",
+    "name": "Pedro Castro",
+
+}
+###
+
+POST http://localhost:3000/api/coordinator
+Content-Type: application/json
+
+{
+    "department": "Supply Chain",
+    "email": "pedro.lima@empresa.com.br",
+    "username": "Phlc2612",
+    "password": "Password1234",
+    "name": "Pedro Lima",
+    "isCoord": true
+
+}
