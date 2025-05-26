@@ -3,7 +3,7 @@ require('dotenv').config();
 
 const isSSL = process.env.DB_SSL === 'true';
 
-const db = new Pool({
+const pool = new Pool({
     user: process.env.DB_USER,
     host: process.env.DB_HOST,
     database: process.env.DB_DATABASE,
@@ -12,4 +12,7 @@ const db = new Pool({
     ssl: isSSL ? { rejectUnauthorized: false } : false,
   });
 
-  module.exports = db
+module.exports = {
+  query: (text, params) => pool.query(text, params),
+  connect: () => pool.connect(),
+};
