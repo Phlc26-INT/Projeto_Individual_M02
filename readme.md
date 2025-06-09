@@ -79,6 +79,13 @@ Será necessário também a instalação dos seguintes pacotes:
 - <b>ejs</b>: npm i ejs
 - <b>express</b>: npm i express
 - <b>pg</b>: npm i pg
+- <b>joi</b>: npm i joi
+- <b>nodemon</b>: npm i nodemon
+
+
+## 💻 Observações para execução da aplicação local
+
+Note que, para que a aplicação se conecte a um banco de dados você precisará criar um arquivo .env a partir do modelo que está na pasta raiz do projeto (.env.example). Com isso, insira as credenciais de seu banco de dados para que possa utilizá-lo.
 
 Isso instalará todas as dependências definidas no arquivo <b>package.json</b> que são necessárias para rodar o projeto. Agora o projeto já está pronto para ser modificado. Caso ainda deseje iniciar a aplicação, digite o comando abaixo no terminal:
 
@@ -87,19 +94,6 @@ npm start
 ```
 5. Agora você pode acessar a aplicação através do link http://localhost:3000/
 6. O servidor está online.
-
-## 🗃 Histórico de lançamentos
-
-* 0.5.0 - XX/XX/2025
-    * 
-* 0.4.0 - XX/XX/2025
-    * 
-* 0.3.0 - XX/XX/2025
-    * 
-* 0.2.0 - XX/XX/2025
-    * 
-* 0.1.0 - XX/XX/2025
-    *
 
 ## 📋 Licença/License
 
