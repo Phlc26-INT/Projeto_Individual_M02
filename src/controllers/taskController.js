@@ -12,7 +12,7 @@ exports.create = async (req, res) => {
 
 exports.read = async (_, res) => {
   try {
-    const tasks = await taskServices.list();
+    const tasks = await taskServices.read();
     console.log("Tarefas retornadas:", tasks);
     res.json(tasks);
   } catch (e) {
@@ -23,7 +23,7 @@ exports.read = async (_, res) => {
 
 exports.readById = async (req, res) => {
   try {
-    const task = await taskServices.detail(req.params.id);
+    const task = await taskServices.readById(req.params.id);
     console.log("Tarefa encontrada:", task);
     if (!task) {
       return res.status(404).json({ error: "Tarefa não encontrada" });
@@ -59,7 +59,7 @@ exports.delete = async (req, res) => {
   try {
     const id = req.params.id;
     console.log(`Removendo tarefa com ID: ${id}`);
-    await taskServices.remove(id);
+    await taskServices.delete(id);
     console.log(`Tarefa com ID ${id} removida com sucesso`);
     res.sendStatus(204);
   } catch (e) {

@@ -12,14 +12,14 @@ module.exports = {
     employee = await validate(employee);
     const result = await db.query(
       `INSERT INTO employee 
-        (department, email, username, password, name, is_coord)
+        (department, email, emp_username, emp_password, name, is_coord)
        VALUES ($1, $2, $3, $4, $5, $6)
-       RETURNING id`,
+       RETURNING emp_id`,
       [
         employee.department,
         employee.email,
-        employee.username,
-        employee.password,
+        employee.emp_username,
+        employee.emp_password,
         employee.name,
         employee.is_coord ?? false,
       ]
@@ -29,17 +29,16 @@ module.exports = {
 
   async findAll() {
     const result = await db.query(
-      `SELECT id, department, email, username, password, name, is_coord 
-       FROM employee`
+      `SELECT * FROM employee`
     );
     return result.rows;
   },
 
   async findById(id) {
     const result = await db.query(
-      `SELECT id, department, email, username, password, name, is_coord 
+      `SELECT * 
        FROM employee 
-       WHERE id = $1`,
+       WHERE emp_id = $1`,
       [id]
     );
     console.log("Resultado da consulta:", result.rows);
@@ -50,7 +49,7 @@ module.exports = {
     payload = await validate(payload);
     await db.query(
       `UPDATE employee 
-       SET department = $1, email = $2, username = $3, password = $4, name = $5, is_coord = $6 
+       SET department = $1, email = $2, emp_username = $3, emp_password = $4, name = $5, is_coord = $6 
        WHERE id = $7`,
       [
         payload.department,
@@ -66,6 +65,6 @@ module.exports = {
   },
 
   async remove(id) {
-    await db.query("DELETE FROM employee WHERE id = $1", [id]);
+    await db.query("DELETE FROM employee WHERE emp_id = $1", [id]);
   },
 };

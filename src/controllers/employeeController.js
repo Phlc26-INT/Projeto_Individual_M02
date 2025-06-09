@@ -12,7 +12,7 @@ exports.create = async (req, res) => {
 
 exports.read = async (_, res) => {
   try {
-    const employees = await empServices.list();
+    const employees = await empServices.read();
     console.log("Colaboradores retornados:", employees);
     res.json(employees);
   } catch (e) {
@@ -22,7 +22,7 @@ exports.read = async (_, res) => {
 };
 exports.readById = async (req, res) => {
   try {
-    const employee = await empServices.detail(req.params.id);
+    const employee = await empServices.readById(req.params.id);
     console.log("Colaborador encontrado:", employee);
     if (!employee) {
       return res.status(404).json({ error: "Colaborador não encontrado" });

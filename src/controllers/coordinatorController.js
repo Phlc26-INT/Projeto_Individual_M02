@@ -12,7 +12,7 @@ exports.create = async (req, res) => {
 
 exports.read = async (_, res) => {
   try {
-    const coordinators = await coordServices.list();
+    const coordinators = await coordServices.read();
     console.log("Coordenadores retornados:", coordinators);
     res.json(coordinators);
   } catch (e) {
@@ -22,7 +22,7 @@ exports.read = async (_, res) => {
 };
 exports.readById = async (req, res) => {
   try {
-    const coordinator = await coordServices.detail(req.params.id);
+    const coordinator = await coordServices.readById(req.params.id);
     console.log("Coordenador encontrado:", coordinator);
     if (!coordinator) {
       return res.status(404).json({ error: "Colaborador não encontrado" });
@@ -46,7 +46,7 @@ exports.delete = async (req, res) => {
   try {
     const id = req.params.id;
     console.log(`Removendo coordenador com ID: ${id}`); 
-    await coordServices.remove(id); 
+    await coordServices.delete(id); 
     console.log(`Coordenador ${id} removido.`);
     res.sendStatus(204);
   } catch (e) {

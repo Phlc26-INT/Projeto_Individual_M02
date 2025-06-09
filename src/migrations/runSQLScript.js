@@ -5,7 +5,7 @@ require('dotenv').config();
 const db = require('../config/db');
 
 const runSQLScript = async () => {
-  const filePath = path.join(__dirname, '202505091346.sql');
+  const filePath = path.join(__dirname, '202506051610.sql');
   const sql = fs.readFileSync(filePath, 'utf8');
 
   try {
@@ -13,8 +13,6 @@ const runSQLScript = async () => {
     console.log('Script SQL executado com sucesso!');
   } catch (err) {
     console.error('Erro ao executar o script SQL:', err);
-  } finally {
-    await db.end();
   }
 };
 

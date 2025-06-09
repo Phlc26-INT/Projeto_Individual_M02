@@ -1,0 +1,94 @@
+<%- include('../partials/header') %>
+
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2><i class="bi bi-clipboard-check"></i> Gestão de Tarefas</h2>
+        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addTaskModal">
+            <i class="bi bi-plus-circle"></i> Nova Tarefa
+        </button>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Descrição</th>
+                            <th>Data de Início</th>
+                            <th>Deadline</th>
+                            <th>Funcionário Atribuído</th>
+                            <th>Tipo de Tarefa</th>
+                            <th class="text-end">Ações</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="addTaskModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalTitle">
+                    <i class="bi bi-clipboard-plus"></i> Nova Tarefa
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="taskForm">
+                    <input type="hidden" id="taskId">
+                    <div class="mb-3">
+                        <label class="form-label">ID</label>
+                        <input type="text" class="form-control" id="task_id" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Descrição</label>
+                        <textarea class="form-control" id="task_description" rows="3" required></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Data de Início</label>
+                        <input type="date" class="form-control" id="init_date" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Deadline</label>
+                        <input type="date" class="form-control" id="due_date" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Funcionário Responsável</label>
+                        <select class="form-select" id="emp_id" required>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Funcionário Responsável</label>
+                        <select class="form-select" id="emp_id" required>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Tipo de tarefa</label>
+                        <select class="form-select" id="task_type" required>
+                            <option value="Compra">Compra</option>
+                            <option value="Serviço">Serviço</option>
+                            <option value="Cotação">Cotação</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    <i class="bi bi-x-circle"></i> Cancelar
+                </button>
+                <button type="button" class="btn btn-primary" id="saveTask">
+                    <i class="bi bi-check-circle"></i> Salvar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<%- include('../partials/footer') %>
