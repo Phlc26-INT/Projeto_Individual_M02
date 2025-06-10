@@ -46,7 +46,7 @@ exports.delete = async (req, res) => {
   try {
     const id = req.params.id;
     console.log(`Removendo coordenador com ID: ${id}`); // Debug
-    await empServices.remove(id); // Aguarda a remoção
+    await empServices.delete(id); // Aguarda a remoção
     console.log(`Coordenador com ID ${id} removido com sucesso`);
     res.sendStatus(204); // Resposta padrão para DELETE bem-sucedido
   } catch (e) {

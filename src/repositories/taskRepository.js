@@ -56,17 +56,15 @@ module.exports = {
            task_description = $3,
            task_type = $4,
            init_date = $5,
-           due_date = $6,
-           is_coord = $7,
-       WHERE task_id = $10`,
+           due_date = $6
+       WHERE task_id = $7`,
       [
         task.emp_id,
         task.coord_id,
         task.task_description,
         task.task_type,
         task.init_date,
-        task.due_date,
-        task.is_coord ?? false,
+        task.due_date
       ]
     );
     return this.findByID(id);
