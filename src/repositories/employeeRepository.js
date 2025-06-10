@@ -45,19 +45,19 @@ module.exports = {
     return result.rows[0];
   },
 
-  async update(id, payload) {
-    payload = await validate(payload);
+  async update(id, employee) {
+    employee = await validate(employee);
     await db.query(
       `UPDATE employee 
        SET department = $1, email = $2, emp_username = $3, emp_password = $4, name = $5, is_coord = $6 
-       WHERE id = $7`,
+       WHERE emp_id = $7`,
       [
-        payload.department,
-        payload.email,
-        payload.username,
-        payload.password,
-        payload.name,
-        payload.is_coord ?? false,
+        employee.department,
+        employee.email,
+        employee.emp_username,
+        employee.emp_password,
+        employee.name,
+        employee.is_coord ?? false,
         id,
       ]
     );

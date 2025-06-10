@@ -20,18 +20,22 @@ Content-Type: application/json
 ###
 
 ###DELETE EMPLOYEE (IN THIS ONE YOU HAVE TO PUT THE ID GENERATED IN YOUR DB)
-DELETE http://localhost:3000/employee/{emp_id}
+DELETE http://localhost:3000/employee/{coordinatorId}
 Accept: application/json
 ###
 
 ###UPDATE EMPLOYEE (IN THIS ONE YOU HAVE TO PUT THE ID GENERATED IN YOUR DB)
-PUT http://localhost:3000/employee/{emp_id}
+PUT http://localhost:3000/employee/{coordinatorId}
 Content-Type: application/json
+
 {
     "department": "Compliance",
-    "nome": "Pedro Costa Júnior",
-
+    "name": "Pedro Costa Júnior",
+    "email": "pedro.costa@empresa.com.br",
+    "emp_password": "Password43452",
+    "emp_username": "Pcosta"
 }
+
 ###
 
 ###COORDINATORS BASIC ROUTES TESTS
@@ -87,21 +91,24 @@ Content-Type: application/json
     "task_description": "Compra de chave sextavada",
     "task_type": "Compra",
     "init_date": "2025-06-08",
-    "due_date": "2025-06-29",
-    "is_coord": "true"
+    "due_date": "2025-06-29"
 }
 ###
 
 ###DELETE TASK (IN THIS ONE YOU HAVE TO PUT THE ID GENERATED IN YOUR DB)
-DELETE http://localhost:3000/task/{task_id}
+DELETE http://localhost:3000/task/c
 Accept: application/json
 ###
 
 ###UPDATE TASK (IN THIS ONE YOU HAVE TO PUT THE ID GENERATED IN YOUR DB)
-PUT http://localhost:3000/employee/{task_id}
+PUT http://localhost:3000/task/{task_id}
 Content-Type: application/json
+
 {
+    "emp_id": "b01d4a71-69c4-4fc4-8ee3-c6593fcf6744",
+    "coord_id": "9646d7da-4e17-4222-94d9-b0f4f845a0f8",
     "task_description": "Descrição de tarefa atualizada",
-    "due_date": "2025-06-16",
+    "init_date": "2025-06-20",
+    "due_date": "2025-06-29"
 }
 ###

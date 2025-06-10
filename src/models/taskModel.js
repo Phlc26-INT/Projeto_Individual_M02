@@ -8,6 +8,5 @@ module.exports = Joi.object({
     task_description: Joi.string().allow(null, ""),
     task_type: Joi.string().allow(null, ""),
     init_date: Joi.date().required(),
-    due_date: Joi.date().required(),
-    is_coord: Joi.boolean().default(false)
+    due_date: Joi.date().required()
 });
