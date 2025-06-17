@@ -41,7 +41,6 @@ module.exports = {
        WHERE emp_id = $1`,
       [id]
     );
-    console.log("Resultado da consulta:", result.rows);
     return result.rows[0];
   },
 

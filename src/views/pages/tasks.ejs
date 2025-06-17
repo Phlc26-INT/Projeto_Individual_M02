@@ -9,9 +9,8 @@
     </div>
 
     <div class="card shadow-sm">
-        <div class="card-body">
-            <div class="table-responsive">
-                <table class="table table-hover mb-0">
+        <div class="card-body">            <div class="table-responsive">
+                <table class="table table-hover mb-0" id="tasksTable">
                     <thead>
                         <tr>
                             <th>ID</th>
@@ -23,13 +22,14 @@
                             <th class="text-end">Ações</th>
                         </tr>
                     </thead>
+                    <tbody id="tasksTableBody">
+                    </tbody>
                 </table>
             </div>
         </div>
     </div>
 </div>
 
-<!-- Modal -->
 <div class="modal fade" id="addTaskModal" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -38,14 +38,9 @@
                     <i class="bi bi-clipboard-plus"></i> Nova Tarefa
                 </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body">
+            </div>            <div class="modal-body">
                 <form id="taskForm">
                     <input type="hidden" id="taskId">
-                    <div class="mb-3">
-                        <label class="form-label">ID</label>
-                        <input type="text" class="form-control" id="task_id" required>
-                    </div>
                     <div class="mb-3">
                         <label class="form-label">Descrição</label>
                         <textarea class="form-control" id="task_description" rows="3" required></textarea>
@@ -61,16 +56,13 @@
                     <div class="mb-3">
                         <label class="form-label">Funcionário Responsável</label>
                         <select class="form-select" id="emp_id" required>
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Funcionário Responsável</label>
-                        <select class="form-select" id="emp_id" required>
+                            <option value="">Selecione um funcionário</option>
                         </select>
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Tipo de tarefa</label>
                         <select class="form-select" id="task_type" required>
+                            <option value="">Selecione o tipo</option>
                             <option value="Compra">Compra</option>
                             <option value="Serviço">Serviço</option>
                             <option value="Cotação">Cotação</option>
@@ -85,10 +77,114 @@
                 <button type="button" class="btn btn-primary" id="saveTask">
                     <i class="bi bi-check-circle"></i> Salvar
                 </button>
-            </div>
-        </div>
+            </div>        </div>
     </div>
 </div>
 
+<script src="/js/api.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    loadTasks();
+    loadEmployeesForSelect();
+    
+    document.getElementById('saveTask').addEventListener('click', saveTask);
+});
+
+async function loadTasks() {
+    try {
+        const tasks = await TaskAPI.get('/task');
+        displayTasks(tasks);
+    } catch (error) {
+        console.error('Erro ao carregar tarefas:', error);
+        alert('Erro ao carregar tarefas. Verifique se o servidor está rodando.');
+    }
+}
+
+async function loadEmployeesForSelect() {
+    try {
+        const employees = await TaskAPI.get('/employee');
+        const select = document.getElementById('emp_id');
+        
+        select.innerHTML = '<option value="">Selecione um funcionário</option>';
+        
+        employees.forEach(employee => {
+            const option = document.createElement('option');
+            option.value = employee.emp_id;
+            option.textContent = employee.name;
+            select.appendChild(option);
+        });
+    } catch (error) {
+        console.error('Erro ao carregar funcionários:', error);
+    }
+}
+
+function displayTasks(tasks) {
+    const tbody = document.getElementById('tasksTableBody');
+    tbody.innerHTML = '';
+    
+    tasks.forEach(task => {
+        const row = `
+            <tr>
+                <td>${task.task_id || ''}</td>
+                <td>${task.task_description || ''}</td>
+                <td>${task.init_date ? new Date(task.init_date).toLocaleDateString('pt-BR') : ''}</td>
+                <td>${task.due_date ? new Date(task.due_date).toLocaleDateString('pt-BR') : ''}</td>
+                <td>${task.employee_name || 'Não atribuído'}</td>
+                <td>${task.task_type || ''}</td>
+                <td class="text-end">
+                    <button class="btn btn-sm btn-outline-primary me-2" onclick="editTask(${task.task_id})">
+                        <i class="bi bi-pencil"></i>
+                    </button>
+                    <button class="btn btn-sm btn-outline-danger" onclick="deleteTask(${task.task_id})">
+                        <i class="bi bi-trash"></i>
+                    </button>
+                </td>
+            </tr>
+        `;
+        tbody.innerHTML += row;
+    });
+}
+
+async function saveTask() {
+    const taskData = {
+        task_description: document.getElementById('task_description').value,
+        init_date: document.getElementById('init_date').value,
+        due_date: document.getElementById('due_date').value,
+        emp_id: document.getElementById('emp_id').value || null,
+        task_type: document.getElementById('task_type').value
+    };
+    
+    try {
+        await TaskAPI.post('/task', taskData);
+        loadTasks();
+        
+        const modal = bootstrap.Modal.getInstance(document.getElementById('addTaskModal'));
+        modal.hide();
+        document.getElementById('taskForm').reset();
+        
+        alert('Tarefa criada com sucesso!');
+    } catch (error) {
+        console.error('Erro ao salvar tarefa:', error);
+        alert('Erro ao salvar tarefa. Verifique os dados e tente novamente.');
+    }
+}
+
+async function deleteTask(id) {
+    if (confirm('Tem certeza que deseja excluir esta tarefa?')) {
+        try {
+            await TaskAPI.delete(`/task/${id}`);
+            loadTasks();
+            alert('Tarefa excluída com sucesso!');
+        } catch (error) {
+            console.error('Erro ao excluir tarefa:', error);
+            alert('Erro ao excluir tarefa.');
+        }
+    }
+}
+// Falta implementar 
+function editTask(id) {
+    alert('Funcionalidade de edição em desenvolvimento');
+}
+</script>
 
 <%- include('../partials/footer') %>

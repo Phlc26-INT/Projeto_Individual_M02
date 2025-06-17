@@ -45,12 +45,12 @@ exports.update = async (req, res) => {
 exports.delete = async (req, res) => {
   try {
     const id = req.params.id;
-    console.log(`Removendo coordenador com ID: ${id}`); // Debug
-    await empServices.delete(id); // Aguarda a remoção
-    console.log(`Coordenador com ID ${id} removido com sucesso`);
-    res.sendStatus(204); // Resposta padrão para DELETE bem-sucedido
+    console.log(`Removendo colaborador com ID: ${id}`); 
+    await empServices.delete(id); 
+    console.log(`colaborador com ID ${id} removido com sucesso`);
+    res.sendStatus(204); 
   } catch (e) {
-    console.error("Erro ao remover coordenador:", e);
+    console.error("Erro ao remover colaborador:", e);
     res.status(500).json({ error: e.message });
   }
 };

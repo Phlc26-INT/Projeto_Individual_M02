@@ -53,4 +53,17 @@ exports.delete = async (req, res) => {
     console.error("Erro ao remover coordenador:", e);
     res.status(500).json({ error: e.message });
   }
+
+  exports.getEmployeePage = async (req, res) => {
+  try {
+    const id = req.params.id;
+    console.log(`Removendo coordenador com ID: ${id}`); 
+    await coordServices.delete(id); 
+    console.log(`Coordenador ${id} removido.`);
+    res.sendStatus(204);
+  } catch (e) {
+    console.error("Erro ao remover coordenador:", e);
+    res.status(500).json({ error: e.message });
+  }
+  }
 };
