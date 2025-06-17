@@ -9,9 +9,8 @@
     </div>
 
     <div class="card shadow-sm">
-        <div class="card-body">
-            <div class="table-responsive">
-                <table class="table table-hover mb-0">
+        <div class="card-body">            <div class="table-responsive">
+                <table class="table table-hover mb-0" id="employeesTable">
                     <thead>
                         <tr>
                             <th>Nome</th>
@@ -21,6 +20,9 @@
                             <th class="text-end">Ações</th>
                         </tr>
                     </thead>
+                    <tbody id="employeesTableBody">
+                        <!-- Dados serão inseridos via JavaScript -->
+                    </tbody>
                 </table>
             </div>
         </div>
@@ -68,8 +70,93 @@
                 <button type="button" class="btn btn-primary" id="saveEmployee">
                     <i class="bi bi-check-circle"></i> Salvar
                 </button>
-            </div>
-        </div>
+            </div>        </div>
     </div>
 </div>
+
+<script src="/js/api.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    loadEmployees();
+    
+    document.getElementById('saveEmployee').addEventListener('click', saveEmployee);
+});
+
+async function loadEmployees() {
+    try {
+        const employees = await TaskAPI.get('/employee');
+        displayEmployees(employees);
+    } catch (error) {
+        console.error('Erro ao carregar funcionários:', error);
+        alert('Erro ao carregar funcionários. Verifique se o servidor está rodando.');
+    }
+}
+
+function displayEmployees(employees) {
+    const tbody = document.getElementById('employeesTableBody');
+    tbody.innerHTML = '';
+    
+    employees.forEach(employee => {
+        const row = `
+            <tr>
+                <td>${employee.name || ''}</td>
+                <td>${employee.department || ''}</td>
+                <td>${employee.email || ''}</td>
+                <td>${employee.emp_username || ''}</td>
+                <td class="text-end">
+                    <button class="btn btn-sm btn-outline-primary me-2" onclick="editEmployee(${employee.emp_id})">
+                        <i class="bi bi-pencil"></i>
+                    </button>
+                    <button class="btn btn-sm btn-outline-danger" onclick="deleteEmployee(${employee.emp_id})">
+                        <i class="bi bi-trash"></i>
+                    </button>
+                </td>
+            </tr>
+        `;
+        tbody.innerHTML += row;
+    });
+}
+
+async function saveEmployee() {
+    const employeeData = {
+        name: document.getElementById('name').value,
+        department: document.getElementById('department').value,
+        email: document.getElementById('email').value,
+        emp_username: document.getElementById('emp_username').value,
+        emp_password: document.getElementById('emp_password').value
+    };
+    
+    try {
+        await TaskAPI.post('/employee', employeeData);
+        loadEmployees(); 
+        
+        const modal = bootstrap.Modal.getInstance(document.getElementById('addEmployeeModal'));
+        modal.hide();
+        document.getElementById('employeeForm').reset();
+        
+        alert('Funcionário criado com sucesso!');
+    } catch (error) {
+        console.error('Erro ao salvar funcionário:', error);
+        alert('Erro ao salvar funcionário. Verifique os dados e tente novamente.');
+    }
+}
+
+async function deleteEmployee(id) {
+    if (confirm('Tem certeza que deseja excluir este funcionário?')) {
+        try {
+            await TaskAPI.delete(`/employee/${id}`);
+            loadEmployees();
+            alert('Funcionário excluído com sucesso!');
+        } catch (error) {
+            console.error('Erro ao excluir funcionário:', error);
+            alert('Erro ao excluir funcionário.');
+        }
+    }
+}
+//Falta implementar 
+function editEmployee(id) {
+    alert('Funcionalidade de edição em desenvolvimento');
+}
+</script>
+
 <%- include('../partials/footer') %>

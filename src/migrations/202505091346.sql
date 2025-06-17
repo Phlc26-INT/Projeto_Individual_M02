@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS coordinator (
-  coord_id SERIAL PRIMARY KEY DEFAULT ,
+  coord_id SERIAL PRIMARY KEY,
   department VARCHAR(100) NOT NULL,
   name VARCHAR(100) NOT NULL,
   email VARCHAR(100) NOT NULL,
@@ -9,7 +9,7 @@ CREATE TABLE IF NOT EXISTS coordinator (
 );
 
 CREATE TABLE IF NOT EXISTS employee (
-  emp_id SERIAL PRIMARY KEY DEFAULT ,
+  emp_id SERIAL PRIMARY KEY ,
   department VARCHAR(100) NOT NULL,
   name VARCHAR(100) NOT NULL,
   email VARCHAR(100) NOT NULL,
@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS employee (
 );
 
 CREATE TABLE IF NOT EXISTS tasks (
-  task_id SERIAL PRIMARY KEY DEFAULT ,
+  task_id SERIAL PRIMARY KEY ,
   emp_id INTEGER,
   coord_id INTEGER,
   task_description VARCHAR(200),

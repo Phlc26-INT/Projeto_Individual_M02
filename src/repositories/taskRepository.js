@@ -26,28 +26,26 @@ module.exports = {
       ]
     );
     return { ...task, id: result.rows[0].id };
-  },
-
-  async findAll() {
+  },  async findAll() {
     const result = await db.query(
-      `SELECT *
-       FROM tasks`
+      `SELECT t.*, e.name as employee_name
+       FROM tasks t
+       LEFT JOIN employee e ON t.emp_id = e.emp_id
+       ORDER BY t.task_id`
     );
     return result.rows;
-  },
-
-  async findByID(id) {
+  },  async findByID(id) {
     const result = await db.query(
-      `SELECT *
-       FROM tasks
-       WHERE task_id = $1`,
+      `SELECT t.*, e.name as employee_name
+       FROM tasks t
+       LEFT JOIN employee e ON t.emp_id = e.emp_id
+       WHERE t.task_id = $1`,
       [id]
     );
     return result.rows[0];
   },
-
   async update(id, task) {
-    payload = await validate(task);
+    task = await validate(task);
 
     await db.query(
       `UPDATE tasks 
