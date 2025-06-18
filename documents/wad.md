@@ -1,259 +1,172 @@
-<img src="./assets/logointeli.png">
+# <a name="c1"></a>1. Introdução
 
+**Coordinator Task Manager - CTM** é uma aplicação web que consiste em um ambiente onde o coordenador pode gerenciar sua equipe e facilitar o controle e organização de tarefas diárias. O sistema permite que o coordenador crie novas tarefas e as atribua a um colaborador que desejar. 
 
-# WAD - Web Application Document - Módulo 2 - Inteli
+O projeto é construído utilizando tecnologias modernas de desenvolvimento web, com uma arquitetura MVC (Model-View-Controller) dividida entre frontend e backend, e integra serviços de banco de dados de forma simples e escalável.
 
-#### Desenvolvido por:
+## Tecnologias Utilizadas:
 
-- <a href="https://www.linkedin.com/in/pedro-henrique-de-lima-castro-1b89b9214/">Pedro Henrique de Lima Castro</a> 
+- **Frontend:** HTML, CSS, JavaScript, EJS (template engine)
+- **Backend:** Node.js com Express seguindo arquitetura MVC
+- **Banco de Dados:** PostgreSQL
 
-## Sumário
+# <a name="c2"></a>2. Banco de Dados
 
-[1. Introdução](#c1)
+O sistema utiliza o PostgreSQL como SGBD. Todas as informações cadastradas ficarão armazenadas nesse banco de dados. A estrutura de dados foi projetada seguindo boas práticas de modelagem relacional para atender às funcionalidades do sistema de gerenciamento de tarefas, permitindo operações de leitura e escrita com desempenho e segurança.
 
-[2. Visão Geral da Aplicação Web](#c2)
+## Estrutura das Tabelas
 
-[3. Projeto Técnico da Aplicação Web](#c3)
+### Tabela `coordinator`
 
-[4. Desenvolvimento da Aplicação Web](#c4)
+Armazena informações dos coordenadores no sistema.
 
-[5. Testes da Aplicação Web](#c5)
+### Tabela `employees`
 
-[6. Estudo de Mercado e Plano de Marketing](#c6)
+Armazena informações dos colaboradores no sistema.
 
-[7. Conclusões e trabalhos futuros](#c7)
+### Tabela `tasks`
 
-[8. Referências](c#8)
+Armazena informações das tarefas no sistema.
 
-[Anexos](#c9)
+## Relacionamentos
 
-<br>
+- Um coordenador pode ter múltiplos colaboradores(1:N)
+- Um colaborador pode ter múltiplas tarefas (1:N)
 
+A integração com o banco de dados é feita através de queries SQL nativas no backend Node.js via módulo `pg`, garantindo acesso seguro e controlado aos dados.
 
-# <a name="c1"></a>1. Introdução 
 
-Atualmente muitas empresas, independente do seu porte, possuem uma dificuldade em identificar pontos de falha em seus fluxos dentro dos processos internos realizados diariamente. Tendo isso em mente, este projeto tem como seu principal objetivo ser um facilitador para os coordenadores e líderes de equipes no que diz respeito de criar, designar e acompanhar tarefas. Para resolver essa problemática, a aplicação web apresentada trará um dashboard das tarefas criadas, com uma tela de consultas para o coordenador e uma de acesso para o colaborador encontrar suas atividades pendentes. Com isso, novas métricas serão acessíveis e as equipes terão como se organizar e distribuir tarefas de maneira mais fácil e eficiente.
+# <a name="c4"></a>3. Integração Frontend e Backend
 
-# <a name="c2"></a>2. Visão Geral da Aplicação Web 
+A aplicação utiliza uma arquitetura híbrida que combina renderização server-side com EJS e comunicação assíncrona via JavaScript para criar uma experiência de usuário moderna e responsiva.
 
-## 2.1. Escopo do Projeto 
+## 4.1. Arquitetura da Integração
 
-### 2.1.1. Modelo de 5 Forças de Porter 
+### Renderização Server-Side (EJS)
 
-*Preencha com até 400 palavras*
+O sistema utiliza o template engine **EJS (Embedded JavaScript)** para renderizar as páginas principais:
 
-*Posicione aqui o modelo de 5 Forças de Porter para sustentar o contexto da indústria.*
+```javascript
+// Configuração do EJS no server.js
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
 
-### 2.1.2. Análise SWOT da Instituição Parceira 
+app.use(express.json());
+app.use(express.static(path.join(__dirname, 'public')));
+app.use("/", routes);
 
-*Preencha com até 100 palavras – sem necessidade de fonte*
+```
 
-*Apresente uma visão geral da situação do parceiro com base na matriz SWOT (forças, fraquezas, oportunidades e ameaças). Foque na relação com os concorrentes e o posicionamento da instituição.*
+## 4.2. Fluxo de Dados
 
-### 2.1.3. Solução 
+### 1. **Carregamento da Página**
 
-*Explique detalhadamente os seguintes aspectos (até 60 palavras por item):*
-1. Problema a ser resolvido
-2. Dados disponíveis (mencionar fonte e conteúdo; se não houver, indicar “não se aplica”)
-3. Solução proposta
-4. Forma de utilização da solução
-5. Benefícios esperados
-6. Critério de sucesso e como será avaliado
+```
+Usuário acessa rota → Express Router → Controller → View EJS → HTML renderizado
+```
 
-### 2.1.4. Value Proposition Canvas 
-*Sem limite de palavras – usar template do curso*
+## 4.3. Estrutura do Frontend
 
-*Elaborar o Value Proposition Canvas com base na proposta de solução definida.*
+### Assets Estáticos
 
-### 2.1.5. Matriz de Riscos do Projeto 
+```
+public/
+├── css/
+│   ├── styles.css          # Estilos globais
+├── js/
+│   ├── api.js           # Funções de comunicação com API
+│   └── pages/
+```
 
-*Sem limite de palavras – usar template do curso*
+### Views EJS
 
-*Registre na matriz os riscos identificados no projeto.*
+```
+views/
+├── pages/
+│   ├── employees.ejs    # Quadro de colaboradores
+│   ├── home.ejs         # Tela principal
+│   ├── tasks.ejs        # Gerenciamento de tarefas
+├── partials/
+│   ├── header.ejs       # Cabeçalho comum
+│   ├── footer.ejs       # Rodapé comum
+```
 
-## 2.2. Personas 
+## 5. Frameworks e Tecnologias Escolhidas
 
-*Posicione aqui suas Personas em forma de texto markdown com imagens, ou como imagem de template preenchido. Atualize esta seção ao longo do módulo se necessário.*
+### Backend
 
-## 2.3. User Stories 
+- **Node.js com Express:** Escolhido pela simplicidade na criação de APIs RESTful e pela vasta comunidade de suporte. O Express oferece flexibilidade para implementar a arquitetura MVC de forma clara e organizada.
+- **PostgreSQL:** Selecionado como banco de dados pela robustez, confiabilidade e suporte nativo a relacionamentos complexos. A escolha de um banco relacional foi estratégica devido à natureza estruturada dos dados (usuários, projetos e tarefas) e suas interconexões.
+- **Joi:** Implementado para validação de dados de entrada, garantindo integridade e segurança nas operações de CRUD. Oferece validações declarativas e mensagens de erro personalizáveis.
 
-*Posicione aqui a lista de User Stories levantadas para o projeto. Siga o template de User Stories e utilize a mesma referência USXX no roadmap de seu quadro Kanban. Indique todas as User Stories mapeadas, mesmo aquelas que não forem implementadas ao longo do projeto. Não se esqueça de explicar o INVEST das 5 User Stories prioritárias*
+### Frontend
 
-*ATUALIZE ESTA SEÇÃO SEMPRE QUE ALGUMA DEMANDA MUDAR EM SEU PROJETO*
+- **EJS (Embedded JavaScript):** Escolhido como template engine pela facilidade de integração com Node.js e pela capacidade de renderização server-side, reduzindo a complexidade do frontend inicial.
+- **JavaScript Nativo:** Optou-se pelo uso do JavaScript, para manter o projeto leve e com o foco em seguir a curva de aprendizado do módulo.
+- **CSS Customizado:** Desenvolvimento de estilos com tema azul para criar uma identidade visual.
+- **Bootstrap:** Utilizado para criar funcionalidades visuais mais responsivas e agradáveis.
 
-*Template de User Story*
-Identificação | USXX (troque XX por numeração ordenada das User Stories)
---- | ---
-Persona | nome da Persona
-User Story | "como (papel/perfil), posso (ação/meta), para (benefício/razão)"
-Critério de aceite 1 | CR1: descrever cenário + testes de aceite
-Critério de aceite 2 | CR2: descrever cenário + testes de aceite
-Critério de aceite ... | CR...
-Critérios INVEST | *(Por que é Independente? Por que é Negociável? Por que é Valorosa? Por que é Estimável? Por que é Pequena? Por que é Testável?)*
+### Arquitetura
 
-# <a name="c3"></a>3. Projeto da Aplicação Web 
+- **MVC (Model-View-Controller com melhorias):** Implementada para separar responsabilidades, facilitando manutenção e escalabilidade do código. Foi utilizada uma variação em que o model se desmembra em Repository e Model e o Controller em Service e Controller. Essa escolha foi para tornar o projeto mais escalável e de fácil manutenção.
 
-## 3.1. Arquitetura 
+# <a name="c6"></a>6. Aprendizados e Desafios
 
-*Posicione aqui o diagrama de arquitetura da sua solução de aplicação web. Atualize sempre que necessário*
+## 6.1. Principais Aprendizados Pessoais (Melhores compreendidos)
 
-## 3.2. Wireframes 
+### Desenvolvimento Backend
+- **Relacionamentos de Banco de Dados:** Implementação prática de relacionamentos 1:N (usuário-projetos, usuário-tarefas, projeto-tarefas) e suas implicações nas queries SQL.
 
-*Posicione aqui as imagens do wireframe construído para sua solução e, opcionalmente, o link para acesso (mantenha o link sempre público para visualização)*
+### Desenvolvimento Frontend
 
-## 3.3. Guia de estilos 
+- **Manipulação do DOM:** Técnicas de manipulação de elementos HTML dinamicamente, incluindo atualização de contadores e filtros em tempo real.
 
-*Descreva aqui orientações gerais para o leitor sobre como utilizar os componentes do guia de estilos de sua solução*
+- **Design Responsivo:** Criação de interfaces adaptáveis e responsivas através de frameworks.
 
-### 3.3.1 Cores
+### Arquitetura e Padrões
 
-*Apresente aqui a paleta de cores, com seus códigos de aplicação e suas respectivas funções*
+- **Separação de Responsabilidades:** Compreensão prática da importância de separar lógica de negócio, apresentação e acesso a dados.
 
-### 3.3.2 Tipografia
+## 6.2. Desafios Pessoais 
 
-*Apresente aqui a tipografia da solução, com famílias de fontes e suas respectivas funções*
+### 1. Comunicação do frontend com o backend
 
-### 3.3.3 Iconografia e imagens 
+**Desafio:** Conseguir manter todas as rotas e endpoints funcionais de modo que a aplicaçao funcione 100% em todas suas frentes. 
 
-*(esta subseção é opcional, caso não existam ícones e imagens, apague esta subseção)*
+### 2. Manutenção de erros
 
-*posicione aqui imagens e textos contendo exemplos padronizados de ícones e imagens, com seus respectivos atributos de aplicação, utilizadas na solução*
+**Desafio:** Identificar o que está causando o erro e como resolver o conflito.
 
-## 3.4 Protótipo de alta fidelidade 
+---
 
-*posicione aqui algumas imagens demonstrativas de seu protótipo de alta fidelidade e o link para acesso ao protótipo completo (mantenha o link sempre público para visualização)*
+# <a name="c7"></a>7. Análise de Resultados
 
-## 3.5. Modelagem do banco de dados 
+## 7.1. Pontos que Funcionaram Bem
 
-### 3.5.1. Modelo relacional 
+### Arquitetura e Estrutura
 
-<div align="center">
-<img src="./assets/modeloRelacional.png" style="width: 900px; heigth: 900px">
-</div>
+- **Separação clara de responsabilidades:** A arquitetura MVC facilitou a manutenção e permitiu desenvolvimento paralelo de diferentes camadas.
 
-A modelagem relacional foi feita a partir da análise das necessidades de cada tipo de usuário de acessar a aplicação de organização de tarefas. Com isso, foram definidos dois usuários, como um sendo o coordenador que atribuirá as tarefas e os funcionários que as realizarão. Vale lembrar que não necessariamente o coordenador tem que criar uma tarefa e nem um funcionário deverá realizar alguma tarefa, por isso foi escolhida a cardinalidade de no mínimo e máximo um funcionário/cooordenador para no mínimo 0 e máximo n tarefas.
+### Interface do Usuário
 
-### 3.5.2. Consultas SQL e lógica proposicional (sprint 2)
+- **Design moderno e limpo:** Tema simples com interfaces sem poluição visual.
 
-*posicione aqui uma lista de consultas SQL compostas, realizadas pelo back-end da aplicação web, com sua respectiva lógica proposicional, descrita conforme template abaixo. Lembre-se que para usar LaTeX em markdown, basta você colocar as expressões entre $ ou $$*
+- **Responsividade efetiva:** Interface funciona bem em diferentes resoluções.
 
-*Template de SQL + lógica proposicional*
-#1 | ---
---- | ---
-**Expressão SQL** | SELECT * FROM suppliers WHERE (state = 'California' AND supplier_id <> 900) OR (supplier_id = 100); 
-**Proposições lógicas** | $A$: O estado é 'California' (state = 'California') <br> $B$: O ID do fornecedor não é 900 (supplier_id ≠ 900) <br> $C$: O ID do fornecedor é 100 (supplier_id = 100)
-**Expressão lógica proposicional** | $(A \land B) \lor C$
-**Tabela Verdade** | <table> <thead> <tr> <th>$A$</th> <th>$B$</th> <th>$C$</th> <th>$(A \land B)$</th> <th>$(A \land B) \lor C$</th> </tr> </thead> <tbody> <tr> <td>F</td> <td>F</td> <td>F</td> <td>F</td> <td>F</td> </tr> <tr> <td>F</td> <td>F</td> <td>V</td> <td>F</td> <td>V</td> </tr> <tr> <td>F</td> <td>V</td> <td>F</td> <td>F</td> <td>F</td> </tr> <tr> <td>F</td> <td>V</td> <td>V</td> <td>F</td> <td>V</td> </tr> <tr> <td>V</td> <td>F</td> <td>F</td> <td>F</td> <td>F</td> </tr> <tr> <td>V</td> <td>F</td> <td>V</td> <td>F</td> <td>V</td> </tr> <tr> <td>V</td> <td>V</td> <td>F</td> <td>V</td> <td>V</td> </tr> <tr> <td>V</td> <td>V</td> <td>V</td> <td>V</td> <td>V</td> </tr> </tbody> </table>
+- **Feedback visual claro:** Indicadores de status, prioridades e loading que melhoram a experiência do usuário.
 
-*Dica: edite a tabela verdade fora do markdown, para ter melhor controle*
+### Funcionalidades
 
-## 3.6. WebAPI e endpoints (sprints 3 e 4)
+- **CRUD (incompleto):** Quase todas as perações básicas implementadas com sucesso para coordenadores e tarefas.
 
-*Utilize um link para outra página de documentação contendo a descrição completa de cada endpoint. Ou descreva aqui cada endpoint criado para seu sistema.* 
+## 7.2. Pontos para Melhoria
 
-*Cada endpoint deve conter endereço, método (GET, POST, PUT, PATCH, DELETE), header, body e formatos de response*
+### Funcionalidades
 
-# <a name="c4"></a>4. Desenvolvimento da Aplicação Web
+- **CRUD de tarefas:** Implementar manutenção de tarefas, especificamente a atualização.
+- **CRUD de colaboradores:** Implementar manutenção de colaboradores, especificamente a exclusão e a atualização.
+- **Validação de coordenador:** Adicionar validação do usuário coordenador para trazer mais segurança.
 
-## 4.1. Primeira versão da aplicação web (sprint 3)
+## Conclusão
 
-*Descreva e ilustre aqui o desenvolvimento da sua primeira versão do sistema web, explicando brevemente o que foi entregue em termos de código e sistema. Utilize prints de tela para ilustrar. Indique as eventuais dificuldades e próximos passos.*
-
-## 4.2. Segunda versão da aplicação web (sprint 4)
-
-*Descreva e ilustre aqui o desenvolvimento da sua segunda versão do sistema web, explicando brevemente o que foi entregue em termos de código e sistema. Utilize prints de tela para ilustrar. Indique as eventuais dificuldades e próximos passos.*
-
-## 4.3. Versão final da aplicação web (sprint 5)
-
-*Descreva e ilustre aqui o desenvolvimento da última versão do sistema web, explicando brevemente o que foi entregue em termos de código e sistema. Utilize prints de tela para ilustrar. Indique as eventuais dificuldades e próximos passos.*
-
-# <a name="c5"></a>5. Testes
-
-## 5.1. Relatório de testes de integração de endpoints automatizados (sprint 4)
-
-*Liste e descreva os testes unitários dos endpoints criados, automatizados e planejados para sua solução. Posicione aqui também o relatório de cobertura de testes Jest se houver (através de link ou transcrito para estrutura markdown)*
-
-## 5.2. Testes de usabilidade (sprint 5)
-
-*Posicione aqui as tabelas com enunciados de tarefas, etapas e resultados de testes de usabilidade. Ou utilize um link para seu relatório de testes (mantenha o link sempre público para visualização)*
-
-# <a name="c6"></a>6. Estudo de Mercado e Plano de Marketing (sprint 4)
-
-## 6.1 Resumo Executivo
-
-*Preencher com até 300 palavras, sem necessidade de fonte*
-
-*Apresente de forma clara e objetiva os principais destaques do projeto: oportunidades de mercado, diferenciais competitivos da aplicação web e os objetivos estratégicos pretendidos.*
-
-## 6.2 Análise de Mercado
-
-*a) Visão Geral do Setor (até 250 palavras)*
-*Contextualize o setor no qual a aplicação está inserida, considerando aspectos econômicos, tecnológicos e regulatórios. Utilize fontes confiáveis.*
-
-*b) Tamanho e Crescimento do Mercado (até 250 palavras)*
-*Apresente dados quantitativos sobre o tamanho atual e projeções de crescimento do mercado. Utilize fontes confiáveis.*
-
-*c) Tendências de Mercado (até 300 palavras)*
-*Identifique e analise tendências relevantes (tecnológicas, comportamentais e mercadológicas) que influenciam o setor. Utilize fontes confiáveis.*
-
-## 6.3 Análise da Concorrência
-
-*a) Principais Concorrentes (até 250 palavras)*
-*Liste os concorrentes diretos e indiretos, destacando suas principais características e posicionamento no mercado.*
-
-*b) Vantagens Competitivas da Aplicação Web (até 250 palavras)*
-*Descreva os diferenciais da sua aplicação em relação aos concorrentes, sem necessidade de citação de fontes.*
-
-
-## 6.4 Público-Alvo
-
-*a) Segmentação de Mercado (até 250 palavras)*
-Descreva os principais segmentos de mercado a serem atendidos pela aplicação. Utilize bases de dados e fontes confiáveis.*
-
-*b) Perfil do Público-Alvo (até 250 palavras)*
-*Caracterize o público-alvo com dados demográficos, psicográficos e comportamentais, incluindo necessidades específicas. Utilize fontes obrigatórias.*
-
-
-## 6.5 Posicionamento
-
-*a) Proposta de Valor Única (até 250 palavras)*
-*Defina de maneira clara o que torna a sua aplicação única e valiosa para o mercado.*
-
-*b) Estratégia de Diferenciação (até 250 palavras)*
-*Explique como sua aplicação se destacará da concorrência, evidenciando a lógica por trás do posicionamento.*
-
-## 6.6 Estratégia de Marketing 
-
-*a) Produto/Serviço (até 200 palavras)*
-*Descreva as funcionalidades, benefícios e diferenciais da aplicação*
-
-*6.2 Preço (até 200 palavras)*
-*Explique o modelo de precificação adotado e justifique com base nas análises anteriores.*
-
-*6.3 Praça (Distribuição) (até 200 palavras)*
-*Apresente os canais digitais utilizados para distribuir e entregar a aplicação ao público.*
-
-*6.4 Promoção (até 200 palavras)*
-*Descreva as estratégias digitais planejadas, como SEO, redes sociais, marketing de conteúdo e campanhas pagas.*
-
-# <a name="c7"></a>7. Conclusões e trabalhos futuros (sprint 5)
-
-*Escreva de que formas a solução da aplicação web atingiu os objetivos descritos na seção 2 deste documento. Indique pontos fortes e pontos a melhorar de maneira geral.*
-
-*Relacione os pontos de melhorias evidenciados nos testes com planos de ações para serem implementadas. O grupo não precisa implementá-las, pode deixar registrado aqui o plano para ações futuras*
-
-*Relacione também quaisquer outras ideias que o grupo tenha para melhorias futuras*
-
-# <a name="c8"></a>8. Referências (sprints 1 a 5)
-
-_Incluir as principais referências de seu projeto, para que seu parceiro possa consultar caso ele se interessar em aprofundar. Um exemplo de referência de livro e de site:_<br>
-
-LUCK, Heloisa. Liderança em gestão escolar. 4. ed. Petrópolis: Vozes, 2010. <br>
-SOBRENOME, Nome. Título do livro: subtítulo do livro. Edição. Cidade de publicação: Nome da editora, Ano de publicação. <br>
-
-INTELI. Adalove. Disponível em: https://adalove.inteli.edu.br/feed. Acesso em: 1 out. 2023 <br>
-SOBRENOME, Nome. Título do site. Disponível em: link do site. Acesso em: Dia Mês Ano
-
-# <a name="c9"></a>Anexos
-
-*Inclua aqui quaisquer complementos para seu projeto, como diagramas, imagens, tabelas etc. Organize em sub-tópicos utilizando headings menores (use ## ou ### para isso)*
+O desenvolvimento do Gerenciador de Tarefas proporcionou uma experiência complexa da criação de uma aplicação web do zero. Trouxe diversas dificuldades com a mudança de arquitetura em partes do projeto, mas trouxe bastante conhecimento desde o planejamento até a sua implementação prática. Apesar de incompleto, ajudou a compreender e entender melhor em quais partes do desenvolvimento de um software que tenho mais aptidão e caoacidade técnica.  
