@@ -12,6 +12,13 @@ O projeto é construído utilizando tecnologias modernas de desenvolvimento web,
 
 # <a name="c2"></a>2. Banco de Dados
 
+
+<div align="center">
+ <sub>Modelagem do Banco de Dados</sub><br><br>
+ <img src="assets/modeloRelacional.png" alt="Título"><br>
+</div>
+
+
 O sistema utiliza o PostgreSQL como SGBD. Todas as informações cadastradas ficarão armazenadas nesse banco de dados. A estrutura de dados foi projetada seguindo boas práticas de modelagem relacional para atender às funcionalidades do sistema de gerenciamento de tarefas, permitindo operações de leitura e escrita com desempenho e segurança.
 
 ## Estrutura das Tabelas
